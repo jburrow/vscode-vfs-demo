@@ -38,6 +38,10 @@ The extension comes with 10 sample files demonstrating various programming langu
    pnpm run compile
    ```
 4. Press F5 to launch a new VS Code window with the extension loaded
+5. To compile a vsix to install
+   ```bash
+   pnpm run package
+   ```
 
 ## Usage
 
