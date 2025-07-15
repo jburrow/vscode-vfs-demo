@@ -11,7 +11,32 @@
             "outFiles": [
                 "${workspaceFolder}/out/**/*.js"
             ],
-            "preLaunchTask": "${workspaceFolder}:Build Extension"
+            "preLaunchTask": "Build Extension",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "sourceMaps": true,
+            "smartStep": true,
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Run Extension (Development)",
+            "type": "extensionHost",
+            "request": "launch",
+            "args": [
+                "--extensionDevelopmentPath=${workspaceFolder}",
+                "--disable-extensions"
+            ],
+            "outFiles": [
+                "${workspaceFolder}/out/**/*.js"
+            ],
+            "preLaunchTask": "Build Extension",
+            "skipFiles": [
+                "<node_internals>/**"
+            ],
+            "sourceMaps": true,
+            "smartStep": true,
+            "console": "integratedTerminal"
         },
         {
             "name": "Extension Tests",
@@ -24,7 +49,7 @@
             "outFiles": [
                 "${workspaceFolder}/out/test/**/*.js"
             ],
-            "preLaunchTask": "${workspaceFolder}:Build Extension"
+            "preLaunchTask": "Build Extension"
         }
     ]
 }

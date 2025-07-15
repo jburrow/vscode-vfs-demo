@@ -3,14 +3,14 @@
   "displayName": "Virtual File System",
   "description": "A VS Code extension that implements a FileSystemProvider with sample files",
   "version": "0.0.1",
-  "publisher": "your-publisher-name",
+  "publisher": "example-publisher",
   "author": {
-    "name": "Your Name"
+    "name": "Example Developer"
   },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/your-username/virtual-file-system.git"
+    "url": "https://github.com/example/virtual-file-system.git"
   },
   "keywords": [
     "filesystem",
@@ -26,7 +26,7 @@
     "Other"
   ],
   "activationEvents": [
-    "onFileSystem:vfs"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {

@@ -9,11 +9,34 @@
 				"run",
 				"compile"
 			],
-			"group": "build",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
 			"problemMatcher": [
 				"$tsc"
 			],
-			"isBackground": false
+			"isBackground": false,
+			"presentation": {
+				"reveal": "silent"
+			}
+		},
+		{
+			"label": "Watch Extension",
+			"type": "shell",
+			"command": "pnpm",
+			"args": [
+				"run",
+				"watch"
+			],
+			"group": "build",
+			"problemMatcher": [
+				"$tsc-watch"
+			],
+			"isBackground": true,
+			"presentation": {
+				"reveal": "never"
+			}
 		}
 	]
 }
