@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { matchesGlob, advanceRegexOnZeroMatch } from './searchUtils';
 
 /**
  * Implements TextSearchProvider for the virtual file system.
@@ -105,9 +106,7 @@ export class VirtualTextSearchProvider implements vscode.TextSearchProvider {
                 matches.push(new vscode.Range(lineNumber, startChar, lineNumber, endChar));
 
                 // Prevent infinite loop on zero-length matches
-                if (match.index === pattern.lastIndex) {
-                    pattern.lastIndex++;
-                }
+                advanceRegexOnZeroMatch(match, pattern);
             }
 
             // Report matches for this line
@@ -248,7 +247,7 @@ export class VirtualTextSearchProvider implements vscode.TextSearchProvider {
         // Check excludes patterns
         if (options.excludes && options.excludes.length > 0) {
             for (const excludePattern of options.excludes) {
-                if (this.matchesGlob(filePath, excludePattern)) {
+                if (matchesGlob(filePath, excludePattern)) {
                     return false;
                 }
             }
@@ -258,7 +257,7 @@ export class VirtualTextSearchProvider implements vscode.TextSearchProvider {
         if (options.includes && options.includes.length > 0) {
             let matchesInclude = false;
             for (const includePattern of options.includes) {
-                if (this.matchesGlob(filePath, includePattern)) {
+                if (matchesGlob(filePath, includePattern)) {
                     matchesInclude = true;
                     break;
                 }
@@ -269,21 +268,5 @@ export class VirtualTextSearchProvider implements vscode.TextSearchProvider {
         }
 
         return true;
-    }
-
-    /**
-     * Simple glob pattern matching.
-     * Supports * and ** wildcards.
-     */
-    private matchesGlob(path: string, pattern: string): boolean {
-        // Convert glob pattern to regex
-        const regexPattern = pattern
-            .replace(/\./g, '\\.')
-            .replace(/\*\*/g, '.*')
-            .replace(/\*/g, '[^/]*')
-            .replace(/\?/g, '.');
-
-        const regex = new RegExp(`^${regexPattern}$`);
-        return regex.test(path);
     }
 }

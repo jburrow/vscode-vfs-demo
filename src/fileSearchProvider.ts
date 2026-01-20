@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { matchesGlob } from './searchUtils';
 
 /**
  * Implements FileSearchProvider for the virtual file system.
@@ -95,7 +96,7 @@ export class VirtualFileSearchProvider implements vscode.FileSearchProvider {
         // Check excludes patterns
         if (options.excludes && options.excludes.length > 0) {
             for (const excludePattern of options.excludes) {
-                if (this.matchesGlob(filePath, excludePattern)) {
+                if (matchesGlob(filePath, excludePattern)) {
                     return false;
                 }
             }
@@ -105,7 +106,7 @@ export class VirtualFileSearchProvider implements vscode.FileSearchProvider {
         if (options.includes && options.includes.length > 0) {
             let matchesInclude = false;
             for (const includePattern of options.includes) {
-                if (this.matchesGlob(filePath, includePattern)) {
+                if (matchesGlob(filePath, includePattern)) {
                     matchesInclude = true;
                     break;
                 }
@@ -116,21 +117,5 @@ export class VirtualFileSearchProvider implements vscode.FileSearchProvider {
         }
 
         return true;
-    }
-
-    /**
-     * Simple glob pattern matching.
-     * Supports * and ** wildcards.
-     */
-    private matchesGlob(path: string, pattern: string): boolean {
-        // Convert glob pattern to regex
-        const regexPattern = pattern
-            .replace(/\./g, '\\.')
-            .replace(/\*\*/g, '.*')
-            .replace(/\*/g, '[^/]*')
-            .replace(/\?/g, '.');
-
-        const regex = new RegExp(`^${regexPattern}$`);
-        return regex.test(path);
     }
 }
