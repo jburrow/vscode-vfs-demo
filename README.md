@@ -10,6 +10,8 @@ A VS Code extension that implements a custom FileSystemProvider to create a virt
 - ✏️ Full read/write capabilities
 - 🔍 Directory browsing and file operations
 - 🎯 Easy mounting via command palette
+- 🔎 **File search support** via FileSearchProvider (Quick Open / Ctrl+P)
+- 📄 **Text search support** via TextSearchProvider (Search in files)
 
 ## Sample Files Included
 
@@ -59,6 +61,8 @@ Once mounted, you can:
 - Create new files and directories
 - Delete, rename, and move files
 - All changes are stored in memory during the session
+- **Use Quick Open (Ctrl+P / Cmd+P)** to search for files by name
+- **Use Search (Ctrl+Shift+F / Cmd+Shift+F)** to search for text within files
 
 ## Development
 
@@ -90,6 +94,8 @@ pnpm run lint
 
 - **extension.ts**: Main extension entry point, handles activation and command registration
 - **virtualFileSystemProvider.ts**: Implementation of VS Code's FileSystemProvider interface
+- **fileSearchProvider.ts**: Implementation of FileSearchProvider for Quick Open support
+- **textSearchProvider.ts**: Implementation of TextSearchProvider for text search in files
 - **package.json**: Extension manifest defining commands, activation events, and metadata
 
 ### File System Operations
@@ -103,12 +109,28 @@ The extension implements all required FileSystemProvider methods:
 - `delete()` - Delete files/directories
 - `rename()` - Rename/move files
 
+### Search Operations
+
+The extension implements search providers using provisional APIs:
+- **FileSearchProvider** - Enables Quick Open (Ctrl+P) to search for files by name
+  - Supports fuzzy matching for flexible file searching
+  - Respects include/exclude patterns
+  - Configurable maximum results
+- **TextSearchProvider** - Enables full-text search (Ctrl+Shift+F) within files
+  - Supports regex patterns and case-sensitive search
+  - Whole word matching
+  - Context lines before/after matches
+  - Configurable preview options
+
 ## Technical Details
 
 - **Scheme**: `vfs://` - Custom URI scheme for the virtual file system
 - **Storage**: In-memory - Files are stored in JavaScript Map objects
 - **Events**: Implements VS Code's file change events for real-time updates
 - **Error Handling**: Uses VS Code's FileSystemError for proper error reporting
+- **Search APIs**: Uses provisional FileSearchProvider and TextSearchProvider APIs
+  - Enabled via `enabledApiProposals` in package.json
+  - Requires `fileSearchProvider` and `textSearchProvider` proposals
 
 ## Contributing
 
@@ -130,3 +152,7 @@ This extension uses the following VS Code APIs:
 - EventEmitter for file change notifications
 - Command registration and execution
 - URI handling for custom schemes
+- **FileSearchProvider interface (provisional API)**
+- **TextSearchProvider interface (provisional API)**
+- **workspace.registerFileSearchProvider() (provisional API)**
+- **workspace.registerTextSearchProvider() (provisional API)**

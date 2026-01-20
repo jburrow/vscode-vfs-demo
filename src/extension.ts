@@ -1,5 +1,7 @@
 import * as vscode from 'vscode';
 import { VirtualFileSystemProvider } from './virtualFileSystemProvider';
+import { VirtualFileSearchProvider } from './fileSearchProvider';
+import { VirtualTextSearchProvider } from './textSearchProvider';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Virtual File System extension is now active!');
@@ -16,6 +18,16 @@ export function activate(context: vscode.ExtensionContext) {
 
     console.log('FileSystemProvider registered for vfs:// scheme');
 
+    // Create and register the file search provider
+    const fileSearchProvider = new VirtualFileSearchProvider(vfsProvider);
+    const fileSearchRegistration = vscode.workspace.registerFileSearchProvider('vfs', fileSearchProvider);
+    console.log('FileSearchProvider registered for vfs:// scheme');
+
+    // Create and register the text search provider
+    const textSearchProvider = new VirtualTextSearchProvider(vfsProvider);
+    const textSearchRegistration = vscode.workspace.registerTextSearchProvider('vfs', textSearchProvider);
+    console.log('TextSearchProvider registered for vfs:// scheme');
+
     // Register command to mount the virtual file system
     const mountCommand = vscode.commands.registerCommand('vfs.mount', async () => {
         console.log('Mount command executed');
@@ -31,7 +43,12 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     console.log('Commands and providers registered');
-    context.subscriptions.push(registration, mountCommand);
+    context.subscriptions.push(
+        registration,
+        fileSearchRegistration,
+        textSearchRegistration,
+        mountCommand
+    );
 }
 
 export function deactivate() {
