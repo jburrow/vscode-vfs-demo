@@ -4,8 +4,9 @@ export class VirtualFileSystemProvider implements vscode.FileSystemProvider {
     private _onDidChangeFile = new vscode.EventEmitter<vscode.FileChangeEvent[]>();
     readonly onDidChangeFile = this._onDidChangeFile.event;
 
-    private files = new Map<string, Uint8Array>();
-    private directories = new Set<string>();
+    // Make files and directories accessible for search providers
+    public readonly files = new Map<string, Uint8Array>();
+    public readonly directories = new Set<string>();
 
     constructor() {
         this.initializeSampleFiles();
