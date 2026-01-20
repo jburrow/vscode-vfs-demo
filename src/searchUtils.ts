@@ -12,7 +12,9 @@
  */
 export function matchesGlob(path: string, pattern: string): boolean {
     // Convert glob pattern to regex
+    // First escape backslashes to prevent regex injection
     const regexPattern = pattern
+        .replace(/\\/g, '\\\\')
         .replace(/\./g, '\\.')
         .replace(/\*\*/g, '.*')
         .replace(/\*/g, '[^/]*')
