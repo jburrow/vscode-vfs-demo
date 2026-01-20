@@ -13,7 +13,7 @@ export class VirtualFileSystemProvider implements vscode.FileSystemProvider {
     }
 
     private initializeSampleFiles() {
-        // Initialize with 10 sample files with different types of code
+        // Initialize with 11 sample files with different types of code
         const sampleFiles = [
             {
                 path: '/hello.js',
@@ -153,6 +153,7 @@ body {
     "name": "Virtual File System Config",
     "version": "1.0.0",
     "settings": {
+    "description": "Example .json for information purposes",
         "theme": "dark",
         "autoSave": true,
         "maxFileSize": "10MB",
@@ -164,7 +165,7 @@ body {
             ".css",
             ".json",
             ".md",
-            ".txt"
+            ".txt",".tex"
         ]
     },
     "features": {
@@ -173,6 +174,21 @@ body {
         "errorChecking": true
     }
 }`
+            },
+            {
+                path: '/document.tex',
+                content: `\\documentclass{article}
+\\title{Sample Document}
+\\author{Virtual File System}
+\\date{\\today}
+
+\\begin{document}
+\\maketitle
+
+\\section{Introduction}
+This is a simple LaTeX document in the virtual file system.
+
+\\end{document}`
             },
             {
                 path: '/README.md',
@@ -345,12 +361,12 @@ func main() {
 
     watch(uri: vscode.Uri): vscode.Disposable {
         // For simplicity, we don't implement actual file watching
-        return new vscode.Disposable(() => {});
+        return new vscode.Disposable(() => { });
     }
 
     stat(uri: vscode.Uri): vscode.FileStat {
         const path = uri.path;
-        
+
         if (this.directories.has(path)) {
             return {
                 type: vscode.FileType.Directory,
@@ -359,7 +375,7 @@ func main() {
                 size: 0
             };
         }
-        
+
         if (this.files.has(path)) {
             const content = this.files.get(path)!;
             return {
@@ -369,19 +385,19 @@ func main() {
                 size: content.length
             };
         }
-        
+
         throw vscode.FileSystemError.FileNotFound(uri);
     }
 
     readDirectory(uri: vscode.Uri): [string, vscode.FileType][] {
         const path = uri.path;
-        
+
         if (!this.directories.has(path)) {
             throw vscode.FileSystemError.FileNotFound(uri);
         }
 
         const entries: [string, vscode.FileType][] = [];
-        
+
         // Add files in this directory
         for (const filePath of this.files.keys()) {
             if (this.isDirectChild(path, filePath)) {
@@ -389,7 +405,7 @@ func main() {
                 entries.push([fileName, vscode.FileType.File]);
             }
         }
-        
+
         // Add subdirectories
         for (const dirPath of this.directories) {
             if (this.isDirectChild(path, dirPath) && dirPath !== path) {
@@ -397,7 +413,7 @@ func main() {
                 entries.push([dirName, vscode.FileType.Directory]);
             }
         }
-        
+
         return entries;
     }
 
@@ -405,11 +421,11 @@ func main() {
         if (parentPath === '/') {
             return childPath.startsWith('/') && childPath.indexOf('/', 1) === -1 && childPath !== '/';
         }
-        
+
         if (!childPath.startsWith(parentPath + '/')) {
             return false;
         }
-        
+
         const relativePath = childPath.substring(parentPath.length + 1);
         return relativePath.indexOf('/') === -1;
     }
@@ -421,11 +437,11 @@ func main() {
 
     createDirectory(uri: vscode.Uri): void {
         const path = uri.path;
-        
+
         if (this.directories.has(path) || this.files.has(path)) {
             throw vscode.FileSystemError.FileExists(uri);
         }
-        
+
         this.directories.add(path);
         this._onDidChangeFile.fire([{
             type: vscode.FileChangeType.Created,
@@ -436,28 +452,28 @@ func main() {
     readFile(uri: vscode.Uri): Uint8Array {
         const path = uri.path;
         const content = this.files.get(path);
-        
+
         if (!content) {
             throw vscode.FileSystemError.FileNotFound(uri);
         }
-        
+
         return content;
     }
 
     writeFile(uri: vscode.Uri, content: Uint8Array, options: { create: boolean; overwrite: boolean }): void {
         const path = uri.path;
         const exists = this.files.has(path);
-        
+
         if (exists && !options.overwrite) {
             throw vscode.FileSystemError.FileExists(uri);
         }
-        
+
         if (!exists && !options.create) {
             throw vscode.FileSystemError.FileNotFound(uri);
         }
-        
+
         this.files.set(path, content);
-        
+
         const changeType = exists ? vscode.FileChangeType.Changed : vscode.FileChangeType.Created;
         this._onDidChangeFile.fire([{
             type: changeType,
@@ -467,7 +483,7 @@ func main() {
 
     delete(uri: vscode.Uri, options: { recursive: boolean }): void {
         const path = uri.path;
-        
+
         if (this.files.has(path)) {
             this.files.delete(path);
         } else if (this.directories.has(path)) {
@@ -482,7 +498,7 @@ func main() {
                 for (const filePath of toDelete) {
                     this.files.delete(filePath);
                 }
-                
+
                 const dirsToDelete = [];
                 for (const dirPath of this.directories) {
                     if (dirPath.startsWith(path + '/')) {
@@ -497,7 +513,7 @@ func main() {
         } else {
             throw vscode.FileSystemError.FileNotFound(uri);
         }
-        
+
         this._onDidChangeFile.fire([{
             type: vscode.FileChangeType.Deleted,
             uri
@@ -507,17 +523,17 @@ func main() {
     rename(oldUri: vscode.Uri, newUri: vscode.Uri, options: { overwrite: boolean }): void {
         const oldPath = oldUri.path;
         const newPath = newUri.path;
-        
+
         if (this.files.has(oldPath)) {
             const content = this.files.get(oldPath)!;
-            
+
             if (this.files.has(newPath) && !options.overwrite) {
                 throw vscode.FileSystemError.FileExists(newUri);
             }
-            
+
             this.files.set(newPath, content);
             this.files.delete(oldPath);
-            
+
             this._onDidChangeFile.fire([
                 { type: vscode.FileChangeType.Deleted, uri: oldUri },
                 { type: vscode.FileChangeType.Created, uri: newUri }
