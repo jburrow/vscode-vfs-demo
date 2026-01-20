@@ -6,7 +6,7 @@ All notable changes to the "virtual-file-system" extension will be documented in
 
 ### Added
 - Initial release of Virtual File System extension
-- FileSystemProvider implementation with custom `vfs://` scheme
+- FileSystemProvider implementation with custom `vfs` scheme
 - 10 sample files with different programming languages:
   - JavaScript (hello.js)
   - Python (calculator.py)

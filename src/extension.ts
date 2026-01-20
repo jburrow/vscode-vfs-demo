@@ -16,17 +16,17 @@ export function activate(context: vscode.ExtensionContext) {
         isReadonly: false
     });
 
-    console.log('FileSystemProvider registered for vfs:// scheme');
+    console.log('FileSystemProvider registered for vfs scheme');
 
     // Create and register the file search provider
     const fileSearchProvider = new VirtualFileSearchProvider(vfsProvider);
     const fileSearchRegistration = vscode.workspace.registerFileSearchProvider('vfs', fileSearchProvider);
-    console.log('FileSearchProvider registered for vfs:// scheme');
+    console.log('FileSearchProvider registered for vfs scheme');
 
     // Create and register the text search provider
     const textSearchProvider = new VirtualTextSearchProvider(vfsProvider);
     const textSearchRegistration = vscode.workspace.registerTextSearchProvider('vfs', textSearchProvider);
-    console.log('TextSearchProvider registered for vfs:// scheme');
+    console.log('TextSearchProvider registered for vfs scheme');
 
     // Register command to mount the virtual file system
     const mountCommand = vscode.commands.registerCommand('vfs.mount', async () => {
@@ -53,13 +53,15 @@ export function activate(context: vscode.ExtensionContext) {
     // Auto-mount the virtual file system on activation
     const vfsRoot = vscode.Uri.parse('vfs:/');
     vscode.commands.executeCommand('vscode.openFolder', vfsRoot, { forceNewWindow: false })
-        .then(() => {
-            vscode.window.showInformationMessage('Virtual File System mounted successfully!');
-        })
-        .catch((error) => {
-            console.error('Failed to auto-mount VFS:', error);
-            vscode.window.showErrorMessage(`Failed to mount Virtual File System: ${error}`);
-        });
+        .then(
+            () => {
+                vscode.window.showInformationMessage('Virtual File System mounted successfully!');
+            },
+            (error: unknown) => {
+                console.error('Failed to auto-mount VFS:', error);
+                vscode.window.showErrorMessage(`Failed to mount Virtual File System: ${error}`);
+            }
+        );
 }
 
 export function deactivate() {
