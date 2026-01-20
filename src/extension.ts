@@ -5,7 +5,7 @@ import { VirtualTextSearchProvider } from './textSearchProvider';
 
 export function activate(context: vscode.ExtensionContext) {
     console.log('Virtual File System extension is now active!');
-    
+
     // Show activation message
     vscode.window.showInformationMessage('Virtual File System extension activated!');
 
@@ -49,6 +49,17 @@ export function activate(context: vscode.ExtensionContext) {
         textSearchRegistration,
         mountCommand
     );
+
+    // Auto-mount the virtual file system on activation
+    const vfsRoot = vscode.Uri.parse('vfs:/');
+    vscode.commands.executeCommand('vscode.openFolder', vfsRoot, { forceNewWindow: false })
+        .then(() => {
+            vscode.window.showInformationMessage('Virtual File System mounted successfully!');
+        })
+        .catch((error) => {
+            console.error('Failed to auto-mount VFS:', error);
+            vscode.window.showErrorMessage(`Failed to mount Virtual File System: ${error}`);
+        });
 }
 
 export function deactivate() {

@@ -46,7 +46,7 @@ This guide explains how to debug and run your Virtual File System extension in V
 ### **3. Console Output (Developer Tools):**
 ```
 Virtual File System extension is now active!
-FileSystemProvider registered for vfs:// scheme
+FileSystemProvider registered for vfs scheme
 Commands and providers registered
 ```
 
@@ -58,7 +58,7 @@ Commands and providers registered
 2. **Type** "Mount Virtual File System"
 3. **Select** the command
 4. **Should see**: "Virtual File System mounted successfully!"
-5. **Check Explorer**: Files under `vfs://` scheme
+5. **Check Explorer**: Files under `vfs:/` scheme
 
 ### **Available Commands:**
 - `VFS: Mount Virtual File System` - Mounts the virtual file system
@@ -112,7 +112,7 @@ Your extension should have:
 
 ### **Files Not Accessible:**
 1. **Try Mount Command**: Should register file system
-2. **Check URI**: Use `vfs://` scheme
+2. **Check URI**: Use `vfs:/` scheme
 3. **Look at FileSystemProvider**: Check for initialization errors
 
 ## 📊 **Debug Output Locations:**
@@ -134,7 +134,7 @@ Your extension is now properly configured for F5 debugging. When you press F5:
 2. ✅ **Launches Extension Development Host** 
 3. ✅ **Activates your extension** with `*` activation event
 4. ✅ **Shows activation message** 
-5. ✅ **Registers VFS provider** for `vfs://` scheme
+5. ✅ **Registers VFS provider** for `vfs` scheme
 6. ✅ **Ready for testing** with mount command
 
 **Just press F5 and start developing!** 🎯

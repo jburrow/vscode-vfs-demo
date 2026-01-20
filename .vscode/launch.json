@@ -6,7 +6,9 @@
             "type": "extensionHost",
             "request": "launch",
             "args": [
-                "--extensionDevelopmentPath=${workspaceFolder}"
+                "--extensionDevelopmentPath=${workspaceFolder}",
+                "--enable-proposed-api",
+                "example-publisher.virtual-file-system"
             ],
             "outFiles": [
                 "${workspaceFolder}/out/**/*.js"
@@ -25,6 +27,8 @@
             "request": "launch",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
+                "--enable-proposed-api",
+                "example-publisher.virtual-file-system",
                 "--disable-extensions"
             ],
             "outFiles": [
@@ -44,6 +48,8 @@
             "request": "launch",
             "args": [
                 "--extensionDevelopmentPath=${workspaceFolder}",
+                "--enable-proposed-api",
+                "example-publisher.virtual-file-system",
                 "--extensionTestsPath=${workspaceFolder}/out/test/suite/index"
             ],
             "outFiles": [

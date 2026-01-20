@@ -82,8 +82,8 @@ The FileSearchProvider is also used by the `workspace.findFiles` API.
 1. Open Command Palette (Ctrl+Shift+P)
 2. Run "Developer: Show Running Extensions"
 3. In the Extensions Host window console, you should see log messages:
-   - "FileSearchProvider registered for vfs:// scheme"
-   - "TextSearchProvider registered for vfs:// scheme"
+   - "FileSearchProvider registered for vfs scheme"
+   - "TextSearchProvider registered for vfs scheme"
 
 ## Expected Console Output
 

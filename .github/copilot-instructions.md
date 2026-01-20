@@ -1,29 +1,30 @@
 <!-- Use this file to provide workspace-specific custom instructions to Copilot. For more details, visit https://code.visualstudio.com/docs/copilot/copilot-customization#_use-a-githubcopilotinstructionsmd-file -->
 
-# VS Code Extension Development Instructions
+# VS Code Virtual File System Extension
 
-This is a VS Code extension project that implements a custom FileSystemProvider. Please use the get_vscode_api with a query as input to fetch the latest VS Code API references.
+Always use get_vscode_api for VS Code API details (this project relies on core and proposed APIs).
 
-## Project Overview
-- This extension creates a virtual file system with sample files
-- It implements the VS Code FileSystemProvider interface
-- The file system is mounted using the 'vfs:/' scheme
-- Sample files include JavaScript, Python, TypeScript, CSS, HTML, JSON, Markdown, Go, and text files
+## Big picture
+- Implements an in-memory `vfs:/` file system plus search providers for Quick Open and Search.
+- `src/extension.ts` wires everything: registers the FileSystemProvider and the File/Text search providers.
+- `src/virtualFileSystemProvider.ts` owns the data model (in-memory Maps/Sets) and fires change events.
+- `src/fileSearchProvider.ts` and `src/textSearchProvider.ts` read from the provider’s public data structures.
+- Proposed APIs are enabled in `package.json` via `enabledApiProposals` (file/text search).
 
-## Key Components
-- **extension.ts**: Main extension entry point and activation
-- **virtualFileSystemProvider.ts**: Implementation of the FileSystemProvider interface
-- **package.json**: Extension manifest with commands and activation events
+## Key workflows
+- Build: `pnpm run compile` (TypeScript compile).
+- Watch: `pnpm run watch`.
+- Lint: `pnpm run lint`.
+- Debug: press F5 to launch Extension Development Host (see DEBUG-GUIDE.md).
+- After launch, run the command “Mount Virtual File System” to mount `vfs:/`.
 
-## Development Guidelines
-- Use TypeScript for all code
-- Follow VS Code API patterns and best practices
-- Implement proper error handling using FileSystemError
-- Fire change events when files are modified
-- Support both files and directories in the virtual file system
+## Project-specific patterns
+- Use `FileSystemError` for FS failures and fire file-change events after mutations.
+- The `vfs:` scheme is the single integration point for providers and URIs.
+- Search providers must honor include/exclude patterns, `maxResults`, and cancellation tokens.
+- Keep `virtualFileSystemProvider.ts` as the source of truth for file/directory state; providers read from it.
 
-## Testing
-- Test file operations (read, write, create, delete, rename)
-- Verify directory listing functionality
-- Ensure proper error handling for non-existent files
-- Test the mount command functionality
+## Useful references
+- Architecture and provider details: README.md, IMPLEMENTATION.md.
+- Manual test steps: TESTING.md (Quick Open + Search behaviors).
+- Provider entry points: src/extension.ts, src/virtualFileSystemProvider.ts, src/fileSearchProvider.ts, src/textSearchProvider.ts.

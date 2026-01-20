@@ -124,7 +124,7 @@ The extension implements search providers using provisional APIs:
 
 ## Technical Details
 
-- **Scheme**: `vfs://` - Custom URI scheme for the virtual file system
+- **Scheme**: `vfs` - Custom URI scheme for the virtual file system (root URI is `vfs:/`)
 - **Storage**: In-memory - Files are stored in JavaScript Map objects
 - **Events**: Implements VS Code's file change events for real-time updates
 - **Error Handling**: Uses VS Code's FileSystemError for proper error reporting
