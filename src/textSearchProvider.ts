@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { matchesGlob, advanceRegexOnZeroMatch } from './searchUtils';
+import { matchesGlob, preventInfiniteLoop } from './searchUtils';
 
 /**
  * Implements TextSearchProvider for the virtual file system.
@@ -43,8 +43,9 @@ export class VirtualTextSearchProvider implements vscode.TextSearchProvider {
                 continue;
             }
 
-            // Convert content to string
-            const text = Buffer.from(content).toString('utf8');
+            // Convert content to string with the specified encoding
+            const encoding = options.encoding as BufferEncoding | undefined;
+            const text = Buffer.from(content).toString(encoding || 'utf8');
             
             // Check file size limit
             if (options.maxFileSize && content.length > options.maxFileSize) {
@@ -105,8 +106,8 @@ export class VirtualTextSearchProvider implements vscode.TextSearchProvider {
                 const endChar = startChar + match[0].length;
                 matches.push(new vscode.Range(lineNumber, startChar, lineNumber, endChar));
 
-                // Prevent infinite loop on zero-length matches
-                advanceRegexOnZeroMatch(match, pattern);
+                // Prevent infinite loop on zero-width matches (e.g., ^ or $)
+                preventInfiniteLoop(match, pattern);
             }
 
             // Report matches for this line

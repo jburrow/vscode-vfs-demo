@@ -23,13 +23,16 @@ export function matchesGlob(path: string, pattern: string): boolean {
 }
 
 /**
- * Helper to prevent infinite loops when using RegExp.exec with zero-length matches.
- * Advances the lastIndex when a zero-length match is found.
+ * Prevents infinite loops when using RegExp.exec with zero-width matches.
+ * Zero-width matches (like `^` or `$`) can match at the same position repeatedly.
+ * This helper advances the lastIndex when a zero-width match is detected.
  * 
  * @param match The RegExpExecArray result from exec()
- * @param pattern The RegExp pattern being used
+ * @param pattern The RegExp pattern being used (will be mutated)
  */
-export function advanceRegexOnZeroMatch(match: RegExpExecArray, pattern: RegExp): void {
+export function preventInfiniteLoop(match: RegExpExecArray, pattern: RegExp): void {
+    // If the match has zero width (match.index === pattern.lastIndex),
+    // advance lastIndex to prevent matching the same position again
     if (match.index === pattern.lastIndex) {
         pattern.lastIndex++;
     }
