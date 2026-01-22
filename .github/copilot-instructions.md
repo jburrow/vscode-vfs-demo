@@ -17,12 +17,14 @@ Always use get_vscode_api for VS Code API details (this project relies on core a
 - Lint: `pnpm run lint`.
 - Debug: press F5 to launch Extension Development Host (see DEBUG-GUIDE.md).
 - After launch, run the command “Mount Virtual File System” to mount `vfs:/`.
+- **Package manager**: This project uses **pnpm**. Always use `pnpm` commands (not npm or yarn).
 
 ## Project-specific patterns
 - Use `FileSystemError` for FS failures and fire file-change events after mutations.
 - The `vfs:` scheme is the single integration point for providers and URIs.
 - Search providers must honor include/exclude patterns, `maxResults`, and cancellation tokens.
 - Keep `virtualFileSystemProvider.ts` as the source of truth for file/directory state; providers read from it.
+- **Activation events**: Never use `"*"` activation. Use specific events: `onCommand:vfs.mount` and `onFileSystem:vfs`. Update `activationEvents` in `package.json` when adding new commands.
 
 ## Useful references
 - Architecture and provider details: README.md, IMPLEMENTATION.md.

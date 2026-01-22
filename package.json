@@ -30,7 +30,8 @@
     "Other"
   ],
   "activationEvents": [
-    "*"
+    "onCommand:vfs.mount",
+    "onFileSystem:vfs"
   ],
   "main": "./out/extension.js",
   "contributes": {
