@@ -2,7 +2,7 @@
   "name": "virtual-file-system",
   "displayName": "Virtual File System",
   "description": "A VS Code extension that implements a FileSystemProvider with sample files",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "example-publisher",
   "author": {
     "name": "Example Developer"
