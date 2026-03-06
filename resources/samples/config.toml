@@ -1,0 +1,121 @@
+# TOML Example - Demonstrates tables, arrays, and inline tables
+# Use this file to validate TOML extension support on VFS
+
+# Top-level key-value pairs
+title = "Virtual File System Configuration"
+version = "1.0.0"
+debug = true
+
+# Owner information
+[owner]
+name = "VFS Team"
+email = "team@example.com"
+organization = "Virtual File System Project"
+
+# Server configuration
+[server]
+host = "127.0.0.1"
+port = 8080
+workers = 4
+timeout = 30
+
+[server.ssl]
+enabled = false
+cert_file = "/etc/ssl/certs/server.crt"
+key_file = "/etc/ssl/private/server.key"
+
+# Database settings
+[database]
+driver = "postgresql"
+host = "localhost"
+port = 5432
+name = "vfs_db"
+user = "vfs_user"
+max_connections = 20
+connection_timeout = 5000
+
+# Multiple database replicas using array of tables
+[[database.replicas]]
+host = "replica1.example.com"
+port = 5432
+weight = 50
+
+[[database.replicas]]
+host = "replica2.example.com"
+port = 5432
+weight = 50
+
+# Logging configuration
+[logging]
+level = "info"
+format = "json"
+
+[logging.file]
+enabled = true
+path = "/var/log/vfs/app.log"
+max_size_mb = 100
+max_backups = 5
+compress = true
+
+[logging.console]
+enabled = true
+colorize = true
+
+# Feature flags using inline tables
+[features]
+dark_mode = { enabled = true, default = false }
+beta_features = { enabled = false, users = ["admin", "tester"] }
+experimental = { enabled = false }
+
+# API configuration
+[api]
+base_path = "/api/v1"
+rate_limit = 100
+rate_limit_window = "1m"
+
+# Allowed CORS origins
+[api.cors]
+origins = [
+    "http://localhost:3000",
+    "http://localhost:8080",
+    "https://app.example.com"
+]
+methods = ["GET", "POST", "PUT", "DELETE"]
+max_age = 86400
+
+# Authentication settings
+[auth]
+provider = "jwt"
+token_expiry = "24h"
+refresh_expiry = "7d"
+
+[auth.jwt]
+secret = "${JWT_SECRET}"
+algorithm = "HS256"
+issuer = "vfs-api"
+
+[auth.oauth]
+enabled = true
+providers = ["google", "github"]
+
+[auth.oauth.google]
+client_id = "${GOOGLE_CLIENT_ID}"
+client_secret = "${GOOGLE_CLIENT_SECRET}"
+
+[auth.oauth.github]
+client_id = "${GITHUB_CLIENT_ID}"
+client_secret = "${GITHUB_CLIENT_SECRET}"
+
+# Scheduled tasks
+[[tasks]]
+name = "cleanup"
+schedule = "0 0 * * *"  # Daily at midnight
+enabled = true
+command = "cleanup_temp_files"
+
+[[tasks]]
+name = "backup"
+schedule = "0 2 * * 0"  # Weekly on Sunday at 2 AM
+enabled = true
+command = "create_backup"
+options = { compress = true, encrypt = true }

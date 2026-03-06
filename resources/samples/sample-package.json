@@ -1,0 +1,30 @@
+{
+    "name": "virtual-file-system-demo",
+    "version": "1.0.0",
+    "description": "A demo package for the virtual file system",
+    "main": "hello.js",
+    "scripts": {
+        "start": "node hello.js",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "build": "tsc",
+        "dev": "nodemon hello.js"
+    },
+    "keywords": [
+        "virtual",
+        "filesystem",
+        "demo",
+        "vscode",
+        "extension"
+    ],
+    "author": "Virtual File System Extension",
+    "license": "MIT",
+    "dependencies": {
+        "express": "^4.18.0",
+        "lodash": "^4.17.21"
+    },
+    "devDependencies": {
+        "@types/node": "^18.0.0",
+        "nodemon": "^2.0.0",
+        "typescript": "^4.9.0"
+    }
+}

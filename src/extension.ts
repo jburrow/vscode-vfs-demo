@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.window.showInformationMessage('Virtual File System extension activated!');
 
     // Create and register the file system provider
-    const vfsProvider = new VirtualFileSystemProvider();
+    const vfsProvider = new VirtualFileSystemProvider(context.extensionUri);
     const registration = vscode.workspace.registerFileSystemProvider('vfs', vfsProvider, {
         isCaseSensitive: true,
         isReadonly: false

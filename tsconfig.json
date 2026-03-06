@@ -16,5 +16,7 @@
     "moduleResolution": "node16",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true
-  }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "out", "resources"]
 }

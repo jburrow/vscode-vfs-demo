@@ -1,0 +1,26 @@
+{
+    "name": "Virtual File System Config",
+    "version": "1.0.0",
+    "settings": {
+        "description": "Example .json for information purposes",
+        "theme": "dark",
+        "autoSave": true,
+        "maxFileSize": "10MB",
+        "supportedExtensions": [
+            ".js",
+            ".ts",
+            ".py",
+            ".html",
+            ".css",
+            ".json",
+            ".md",
+            ".txt",
+            ".tex"
+        ]
+    },
+    "features": {
+        "syntaxHighlighting": true,
+        "autoComplete": true,
+        "errorChecking": true
+    }
+}

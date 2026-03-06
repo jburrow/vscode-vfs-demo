@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  XML Example - Demonstrates elements, attributes, and namespaces
+  Use this file to validate XML extension support on VFS
+-->
+<catalog xmlns="http://example.com/catalog"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns:dc="http://purl.org/dc/elements/1.1/"
+         xsi:schemaLocation="http://example.com/catalog catalog.xsd"
+         version="1.0">
+    
+    <metadata>
+        <dc:title>Product Catalog</dc:title>
+        <dc:creator>Virtual File System</dc:creator>
+        <dc:date>2024-01-15</dc:date>
+        <dc:description>Sample product catalog for VFS demonstration</dc:description>
+    </metadata>
+    
+    <categories>
+        <category id="cat-001" name="Electronics">
+            <description>Electronic devices and accessories</description>
+            <subcategory id="cat-001-001" name="Computers"/>
+            <subcategory id="cat-001-002" name="Mobile Devices"/>
+            <subcategory id="cat-001-003" name="Accessories"/>
+        </category>
+        <category id="cat-002" name="Books">
+            <description>Physical and digital books</description>
+            <subcategory id="cat-002-001" name="Fiction"/>
+            <subcategory id="cat-002-002" name="Non-Fiction"/>
+            <subcategory id="cat-002-003" name="Technical"/>
+        </category>
+    </categories>
+    
+    <products>
+        <product id="prod-001" category-ref="cat-001-001" status="active">
+            <name>Professional Laptop</name>
+            <description><![CDATA[
+                High-performance laptop with:
+                <ul>
+                    <li>16GB RAM</li>
+                    <li>512GB SSD</li>
+                    <li>15.6" Display</li>
+                </ul>
+            ]]></description>
+            <pricing currency="USD">
+                <list-price>1299.99</list-price>
+                <sale-price>999.99</sale-price>
+                <discount-percent>23</discount-percent>
+            </pricing>
+            <inventory>
+                <stock-quantity>150</stock-quantity>
+                <warehouse location="US-WEST">100</warehouse>
+                <warehouse location="US-EAST">50</warehouse>
+            </inventory>
+            <specifications>
+                <spec name="Processor">Intel Core i7</spec>
+                <spec name="Memory">16GB DDR4</spec>
+                <spec name="Storage">512GB NVMe SSD</spec>
+                <spec name="Display">15.6" FHD IPS</spec>
+            </specifications>
+        </product>
+        
+        <product id="prod-002" category-ref="cat-002-003" status="active">
+            <name>Clean Code</name>
+            <description>A handbook of agile software craftsmanship</description>
+            <author>Robert C. Martin</author>
+            <isbn>978-0132350884</isbn>
+            <pricing currency="USD">
+                <list-price>49.99</list-price>
+            </pricing>
+            <inventory>
+                <stock-quantity>500</stock-quantity>
+            </inventory>
+            <formats>
+                <format type="hardcover" available="true"/>
+                <format type="paperback" available="true"/>
+                <format type="ebook" available="true"/>
+            </formats>
+        </product>
+    </products>
+    
+    <reviews>
+        <review product-ref="prod-001" rating="5" verified="true">
+            <reviewer>John D.</reviewer>
+            <date>2024-01-10</date>
+            <title>Excellent laptop!</title>
+            <content>Perfect for development work. Fast and reliable.</content>
+        </review>
+    </reviews>
+</catalog>

@@ -1,12 +1,22 @@
 # Virtual File System Extension
 
-A VS Code extension that implements a custom FileSystemProvider to create a virtual file system with sample files for demonstration and testing purposes. Useful for testing compatibility of other extensions against virtual file systems.
+A VS Code extension that implements a custom FileSystemProvider to create a virtual file system with sample files. **Primary use case**: Help extension developers validate that their extensions work correctly with virtual file systems (VFS).
+
+## Why This Extension?
+
+Many VS Code extensions only work with local files. If your extension needs to support VFS (remote development, GitHub Codespaces, virtual workspaces), you can use this extension to:
+
+- Test your extension against a clean VFS implementation
+- Validate syntax highlighting, IntelliSense, and other language features work on VFS files  
+- Verify your extension handles the `vfs:/` scheme correctly
+- Debug issues specific to non-local file systems
 
 ## Features
 
 - Custom FileSystemProvider implementation
 - In-memory virtual file system with the `vfs:/` scheme
-- 10 pre-loaded sample files with different programming languages
+- **31 sample files** covering major programming languages
+- Nested directory structure (including a LaTeX paper project)
 - Full read/write capabilities
 - Directory browsing and file operations
 - Easy mounting via command palette
@@ -27,18 +37,55 @@ A VS Code extension that implements a custom FileSystemProvider to create a virt
 
 ## Sample Files Included
 
-The extension comes with 10 sample files demonstrating various programming languages and file types:
+Sample files are loaded from the `resources/` folder. Each file contains realistic code examples to test language features.
 
-1. **hello.js** - JavaScript hello world with functions
-2. **calculator.py** - Python calculator with mathematical operations
-3. **person.ts** - TypeScript class definition with interfaces
-4. **styles.css** - CSS styling with modern selectors
-5. **index.html** - HTML page with embedded JavaScript
-6. **config.json** - JSON configuration file example
-7. **README.md** - Markdown documentation
-8. **todo.txt** - Plain text file with task list
-9. **api.go** - Go REST API server example
-10. **sample-package.json** - Node.js package configuration
+### Programming Languages
+| Language | File | Description |
+|----------|------|-------------|
+| JavaScript | `hello.js` | Functions, exports |
+| TypeScript | `person.ts` | Classes, interfaces |
+| Python | `calculator.py` | Functions, docstrings |
+| Go | `api.go` | REST API, structs |
+| Rust | `example.rs` | Traits, structs, tests |
+| C++ | `example.cpp` | Templates, classes, STL |
+| C | `example.c` | Structs, pointers, memory |
+| Java | `Example.java` | Classes, generics, streams |
+| C# | `Example.cs` | Records, LINQ, async |
+| Kotlin | `Example.kt` | Data classes, coroutines |
+| Swift | `example.swift` | Protocols, enums |
+| Ruby | `example.rb` | Classes, blocks, modules |
+| PHP | `example.php` | Classes, type hints |
+
+### Scripting & Shell
+| Language | File | Description |
+|----------|------|-------------|
+| Bash | `example.sh` | Functions, arrays |
+| PowerShell | `example.ps1` | Cmdlets, pipelines |
+
+### Data & Config Formats
+| Format | File | Description |
+|--------|------|-------------|
+| JSON | `config.json` | Nested objects |
+| YAML | `config.yaml` | Full config example |
+| TOML | `config.toml` | Tables, arrays |
+| XML | `data.xml` | Namespaces, CDATA |
+| SQL | `schema.sql` | DDL, queries |
+
+### Web & Markup
+| Format | File | Description |
+|--------|------|-------------|
+| HTML | `index.html` | Document structure |
+| CSS | `styles.css` | Selectors, properties |
+| Markdown | `README.md` | Documentation |
+| LaTeX | `document.tex` | Document structure |
+
+### LaTeX Project (`papers/`)
+A multi-file LaTeX project demonstrating includes:
+- `papers/main.tex` - Main document with packages  
+- `papers/chapters/introduction.tex` - Chapter file
+- `papers/chapters/methods.tex` - Equations, algorithms
+- `papers/chapters/results.tex` - Tables, figures
+- `papers/bib/references.bib` - BibTeX database
 
 ## Installation
 
@@ -123,7 +170,19 @@ pnpm run lint
 - **virtualFileSystemProvider.ts**: Implementation of VS Code's FileSystemProvider interface
 - **fileSearchProvider.ts**: Implementation of FileSearchProvider for Quick Open support
 - **textSearchProvider.ts**: Implementation of TextSearchProvider for text search in files
-- **package.json**: Extension manifest defining commands, activation events, and metadata
+- **searchUtils.ts**: Shared utilities for pattern matching and search filtering
+- **resources/manifest.json**: Defines which sample files to load into the VFS
+- **resources/samples/**: Sample files for various programming languages
+
+### Adding New Sample Files
+
+To add a new sample file:
+1. Create the file in `resources/samples/`
+2. Add an entry to `resources/manifest.json`:
+   ```json
+   { "vfsPath": "/example.xyz", "resourcePath": "samples/example.xyz" }
+   ```
+3. Rebuild the extension
 
 ### File System Operations
 
@@ -156,8 +215,9 @@ The extension implements search providers using provisional APIs:
 - **Events**: Implements VS Code's file change events for real-time updates
 - **Error Handling**: Uses VS Code's FileSystemError for proper error reporting
 - **Search APIs**: Uses provisional FileSearchProvider and TextSearchProvider APIs
-  - Enabled via `enabledApiProposals` in package.json
-  - Requires `fileSearchProvider` and `textSearchProvider` proposals
+  - Enabled via `enabledApiProposals` in package.json (development only)
+  - Marketplace builds have these removed for compatibility
+  - Extension gracefully degrades when APIs are unavailable
 
 ## Contributing
 
@@ -174,9 +234,11 @@ MIT License - see LICENSE file for details.
 ## VS Code API References
 
 This extension uses the following VS Code APIs:
-- FileSystemProvider interface
-- workspace.registerFileSystemProvider()
-- EventEmitter for file change notifications
+- `FileSystemProvider` interface
+- `workspace.registerFileSystemProvider()`
+- `workspace.registerFileSearchProvider()` (proposed API)
+- `workspace.registerTextSearchProvider()` (proposed API)
+- `EventEmitter` for file change notifications
 - Command registration and execution
 - URI handling for custom schemes
 - **FileSearchProvider interface (provisional API)**

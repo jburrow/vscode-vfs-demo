@@ -1,0 +1,106 @@
+# YAML Example - Demonstrates configuration file structure
+# Use this file to validate YAML extension support on VFS
+
+# Application configuration
+app:
+  name: Virtual File System Demo
+  version: 1.0.0
+  environment: development
+  debug: true
+
+# Server settings
+server:
+  host: localhost
+  port: 3000
+  ssl:
+    enabled: false
+    cert_path: /etc/ssl/certs/server.crt
+    key_path: /etc/ssl/private/server.key
+
+# Database configuration
+database:
+  primary:
+    driver: postgresql
+    host: localhost
+    port: 5432
+    name: vfs_demo
+    username: ${DB_USER}
+    password: ${DB_PASSWORD}
+    pool:
+      min: 5
+      max: 20
+      idle_timeout: 30000
+  
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+
+# Logging configuration
+logging:
+  level: debug
+  format: json
+  outputs:
+    - type: console
+      colorize: true
+    - type: file
+      path: /var/log/app/application.log
+      max_size: 100MB
+      max_files: 10
+
+# Feature flags
+features:
+  new_dashboard: true
+  beta_features: false
+  maintenance_mode: false
+
+# API endpoints
+api:
+  base_url: /api/v1
+  rate_limit:
+    enabled: true
+    requests_per_minute: 100
+  endpoints:
+    - path: /users
+      methods: [GET, POST, PUT, DELETE]
+      auth_required: true
+    - path: /public
+      methods: [GET]
+      auth_required: false
+
+# List of allowed origins for CORS
+cors:
+  allowed_origins:
+    - http://localhost:3000
+    - http://localhost:8080
+    - https://example.com
+  allowed_methods:
+    - GET
+    - POST
+    - PUT
+    - DELETE
+    - OPTIONS
+  allowed_headers:
+    - Content-Type
+    - Authorization
+    - X-Requested-With
+
+# Environment-specific overrides
+environments:
+  development:
+    debug: true
+    logging:
+      level: debug
+  
+  staging:
+    debug: false
+    logging:
+      level: info
+  
+  production:
+    debug: false
+    logging:
+      level: warn
+    server:
+      ssl:
+        enabled: true

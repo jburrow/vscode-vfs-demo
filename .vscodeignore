@@ -7,7 +7,8 @@ vsc-extension-quickstart.md
 **/tsconfig.json
 **/.eslintrc.json
 **/*.map
-**/*.ts
+# Exclude source TypeScript but keep resources
+src/**/*.ts
 **/node_modules/**
 **/.github/**
 pnpm-lock.yaml

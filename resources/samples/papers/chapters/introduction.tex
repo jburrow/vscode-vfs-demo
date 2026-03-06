@@ -1,0 +1,41 @@
+% ============================================
+% INTRODUCTION CHAPTER
+% ============================================
+
+\section{Introduction}
+\label{sec:introduction}
+
+Statistical learning theory provides the mathematical foundation
+for machine learning algorithms. As noted by \cite{vapnik1998},
+the goal is to find patterns in data that generalize well.
+
+\subsection{Motivation}
+\label{subsec:motivation}
+
+Consider a dataset $\mathcal{D} = \{(x_i, y_i)\}_{i=1}^{n}$ where
+$x_i \in \R^d$ and $y_i \in \{-1, +1\}$. Our objective is to
+learn a function $f: \R^d \to \{-1, +1\}$ that minimizes the
+\emph{generalization error}.
+
+\begin{definition}[Generalization Error]
+\label{def:gen-error}
+For a hypothesis $h$ and distribution $\mathcal{P}$, the
+generalization error is:
+\begin{equation}
+\label{eq:gen-error}
+R(h) = \E_{(x,y) \sim \mathcal{P}}\left[\mathbf{1}_{h(x) \neq y}\right]
+\end{equation}
+\end{definition}
+
+We will explore this concept further in \Cref{sec:methods}.
+
+\subsection{Document Overview}
+
+This paper is organized as follows:
+\begin{itemize}
+    \item \Cref{sec:methods} presents mathematical frameworks
+    \item \Cref{sec:results} shows experimental results
+    \item We conclude with a discussion of future work
+\end{itemize}
+
+The key theorem (\Cref{thm:main}) appears in \Cref{sec:methods}.

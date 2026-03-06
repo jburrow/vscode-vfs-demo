@@ -1,0 +1,64 @@
+\documentclass[12pt,a4paper]{article}
+
+% ============================================
+% PACKAGES
+% ============================================
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath,amssymb,amsthm}   % Math typesetting
+\usepackage{graphicx}                 % Images
+\usepackage{booktabs}                 % Professional tables
+\usepackage{hyperref}                 % Clickable links
+\usepackage{cleveref}                 % Smart cross-references
+\usepackage{tikz}                     % Diagrams
+\usepackage[ruled,vlined]{algorithm2e} % Algorithms
+\usepackage{lipsum}                   % Dummy text
+
+% ============================================
+% CUSTOM COMMANDS
+% ============================================
+\newcommand{\R}{\mathbb{R}}          % Real numbers
+\newcommand{\N}{\mathbb{N}}          % Natural numbers
+\newcommand{\E}{\mathbb{E}}          % Expectation
+\newcommand{\Var}{\operatorname{Var}} % Variance
+\newcommand{\norm}[1]{\left\lVert#1\right\rVert}
+\newcommand{\abs}[1]{\left|#1\right|}
+
+% Theorem environments
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{definition}[theorem]{Definition}
+
+% ============================================
+% DOCUMENT INFO
+% ============================================
+\title{A Comprehensive Guide to Statistical Learning\\
+       \large Demonstrating LaTeX Features}
+\author{Dr.~Jane Smith\thanks{Virtual University, Dept. of Computer Science} \and 
+        Prof.~John Doe\thanks{Institute for Advanced Study}}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+This document demonstrates a multi-file LaTeX project structure
+with cross-references, mathematical notation, tables, figures,
+algorithms, and bibliography management. We explore fundamental
+concepts in statistical learning theory.
+\end{abstract}
+
+\tableofcontents
+\newpage
+
+% Include chapter files
+\input{chapters/introduction}
+\input{chapters/methods}
+\input{chapters/results}
+
+% Bibliography
+\bibliographystyle{plain}
+\bibliography{bib/references}
+
+\end{document}
