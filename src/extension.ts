@@ -3,6 +3,13 @@ import { VirtualFileSystemProvider } from './virtualFileSystemProvider';
 import { VirtualFileSearchProvider } from './fileSearchProvider';
 import { VirtualTextSearchProvider } from './textSearchProvider';
 
+/**
+ * Check if a proposed API is available by testing if the function exists on the namespace.
+ */
+function hasProposedApi(apiName: 'registerFileSearchProvider' | 'registerTextSearchProvider'): boolean {
+    return typeof (vscode.workspace as unknown as Record<string, unknown>)[apiName] === 'function';
+}
+
 export function activate(context: vscode.ExtensionContext) {
     console.log('Virtual File System extension is now active!');
 
@@ -18,15 +25,38 @@ export function activate(context: vscode.ExtensionContext) {
 
     console.log('FileSystemProvider registered for vfs scheme');
 
-    // Create and register the file search provider
-    const fileSearchProvider = new VirtualFileSearchProvider(vfsProvider);
-    const fileSearchRegistration = vscode.workspace.registerFileSearchProvider('vfs', fileSearchProvider);
-    console.log('FileSearchProvider registered for vfs scheme');
+    // Track which proposed APIs are available
+    const unavailableApis: string[] = [];
 
-    // Create and register the text search provider
-    const textSearchProvider = new VirtualTextSearchProvider(vfsProvider);
-    const textSearchRegistration = vscode.workspace.registerTextSearchProvider('vfs', textSearchProvider);
-    console.log('TextSearchProvider registered for vfs scheme');
+    // Create and register the file search provider (proposed API)
+    if (hasProposedApi('registerFileSearchProvider')) {
+        const fileSearchProvider = new VirtualFileSearchProvider(vfsProvider);
+        const fileSearchRegistration = vscode.workspace.registerFileSearchProvider('vfs', fileSearchProvider);
+        context.subscriptions.push(fileSearchRegistration);
+        console.log('FileSearchProvider registered for vfs scheme');
+    } else {
+        unavailableApis.push('File Search (Quick Open)');
+        console.warn('FileSearchProvider API not available - Quick Open integration disabled');
+    }
+
+    // Create and register the text search provider (proposed API)
+    if (hasProposedApi('registerTextSearchProvider')) {
+        const textSearchProvider = new VirtualTextSearchProvider(vfsProvider);
+        const textSearchRegistration = vscode.workspace.registerTextSearchProvider('vfs', textSearchProvider);
+        context.subscriptions.push(textSearchRegistration);
+        console.log('TextSearchProvider registered for vfs scheme');
+    } else {
+        unavailableApis.push('Text Search');
+        console.warn('TextSearchProvider API not available - Search integration disabled');
+    }
+
+    // Notify user if running in degraded mode
+    if (unavailableApis.length > 0) {
+        vscode.window.showWarningMessage(
+            `VFS: Some features unavailable (proposed APIs not enabled): ${unavailableApis.join(', ')}. ` +
+            `The file system will still work, but search features require proposed API access.`
+        );
+    }
 
     // Register command to mount the virtual file system
     const mountCommand = vscode.commands.registerCommand('vfs.mount', async () => {
@@ -45,8 +75,6 @@ export function activate(context: vscode.ExtensionContext) {
     console.log('Commands and providers registered');
     context.subscriptions.push(
         registration,
-        fileSearchRegistration,
-        textSearchRegistration,
         mountCommand
     );
 

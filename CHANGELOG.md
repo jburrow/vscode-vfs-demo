@@ -2,6 +2,17 @@
 
 All notable changes to the "virtual-file-system" extension will be documented in this file.
 
+## [0.0.2] - 2026-03-06
+
+### Added
+- File search provider for Quick Open (Ctrl+P) support
+- Text search provider for Search in Files (Ctrl+Shift+F) support
+- Graceful degradation when proposed APIs are unavailable
+
+### Changed
+- Extension now works in standard VS Code (search features require proposed API access)
+- Improved activation events for better performance
+
 ## [0.0.1] - 2025-07-14
 
 ### Added

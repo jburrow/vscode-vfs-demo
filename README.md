@@ -1,17 +1,29 @@
 # Virtual File System Extension
 
-A VS Code extension that implements a custom FileSystemProvider to create a virtual file system with sample files for demonstration and testing purposes.
+A VS Code extension that implements a custom FileSystemProvider to create a virtual file system with sample files for demonstration and testing purposes. Useful for testing compatibility of other extensions against virtual file systems.
 
 ## Features
 
-- 🚀 Custom FileSystemProvider implementation
-- 📁 In-memory virtual file system
-- 📝 10 pre-loaded sample files with different programming languages
-- ✏️ Full read/write capabilities
-- 🔍 Directory browsing and file operations
-- 🎯 Easy mounting via command palette
-- 🔎 **File search support** via FileSearchProvider (Quick Open / Ctrl+P)
-- 📄 **Text search support** via TextSearchProvider (Search in files)
+- Custom FileSystemProvider implementation
+- In-memory virtual file system with the `vfs:/` scheme
+- 10 pre-loaded sample files with different programming languages
+- Full read/write capabilities
+- Directory browsing and file operations
+- Easy mounting via command palette
+- **File search support** via FileSearchProvider (Quick Open / Ctrl+P) *
+- **Text search support** via TextSearchProvider (Search in files) *
+
+\* *Search features require VS Code with proposed API access. When unavailable, the extension works normally but search features are disabled.*
+
+## Requirements
+
+- VS Code 1.108.0 or later
+- **For search features**: Requires running VS Code with proposed APIs enabled (use `--enable-proposed-api jburrow.virtual-file-system`)
+
+## Known Limitations
+
+- Files are stored in memory only - all changes are lost when VS Code closes
+- Search features (Quick Open / Text Search for `vfs:/` files) require proposed API access and may not be available in standard VS Code installations
 
 ## Sample Files Included
 
@@ -30,7 +42,26 @@ The extension comes with 10 sample files demonstrating various programming langu
 
 ## Installation
 
-1. Clone or download this repository
+### From VS Code Marketplace
+
+1. Open VS Code
+2. Go to Extensions (Ctrl+Shift+X)
+3. Search for "Virtual File System"
+4. Click Install
+
+### From VSIX File
+
+1. Download the `.vsix` file from [GitHub Releases](https://github.com/jburrow/vscode-vfs-demo/releases)
+2. In VS Code, open Extensions (Ctrl+Shift+X)
+3. Click the `...` menu and select "Install from VSIX..."
+4. Select the downloaded file
+
+### From Source (Development)
+
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/jburrow/vscode-vfs-demo.git
+   ```
 2. Install dependencies:
    ```bash
    pnpm install
@@ -40,10 +71,6 @@ The extension comes with 10 sample files demonstrating various programming langu
    pnpm run compile
    ```
 4. Press F5 to launch a new VS Code window with the extension loaded
-5. To compile a vsix to install
-   ```bash
-   pnpm run package
-   ```
 
 ## Usage
 
