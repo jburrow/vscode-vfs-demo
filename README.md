@@ -138,6 +138,32 @@ Once mounted, you can:
 - **Use Quick Open (Ctrl+P / Cmd+P)** to search for files by name
 - **Use Search (Ctrl+Shift+F / Cmd+Shift+F)** to search for text within files
 
+### Adding VFS to a Multi-Root Workspace
+
+To test your extension against VFS alongside your existing project, add VFS as an additional folder in your `.code-workspace` file:
+
+```json
+{
+    "folders": [
+        {
+            "path": "."
+        },
+        {
+            "uri": "vfs:/",
+            "name": "Virtual File System"
+        }
+    ],
+    "settings": {}
+}
+```
+
+This allows you to:
+- See both your local files and VFS files in the Explorer
+- Test how your extension handles mixed local/virtual workspaces
+- Validate workspace-wide features (search, find references, etc.) across VFS
+
+**Note**: The VFS folder uses `"uri"` instead of `"path"` since it's a virtual file system, not a local directory.
+
 ## Development
 
 ### Building
