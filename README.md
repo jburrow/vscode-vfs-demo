@@ -182,6 +182,18 @@ pnpm run watch
 pnpm run lint
 ```
 
+### Packaging
+
+```bash
+# Package with proposed APIs (for local development/testing)
+pnpm run package
+
+# Package for marketplace (removes proposed APIs for compatibility)
+pnpm run package:marketplace
+```
+
+The `package:marketplace` command removes `enabledApiProposals` from `package.json` before packaging, making the VSIX compatible with standard VS Code installations. Search features will be gracefully disabled at runtime.
+
 ### Testing
 
 1. Press `F5` to launch a new Extension Development Host window

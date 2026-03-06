@@ -50,6 +50,7 @@
     "lint": "eslint src --ext ts",
     "test": "node ./out/test/runTest.js",
     "package": "npx @vscode/vsce package",
+    "package:marketplace": "node -e \"const fs=require('fs');const p=JSON.parse(fs.readFileSync('package.json'));delete p.enabledApiProposals;fs.writeFileSync('package.json.bak',fs.readFileSync('package.json'));fs.writeFileSync('package.json',JSON.stringify(p,null,2))\" && npx @vscode/vsce package && node -e \"require('fs').renameSync('package.json.bak','package.json')\"",
     "publish": "npx @vscode/vsce publish",
     "package:pre-release": "npx @vscode/vsce package --pre-release",
     "publish:pre-release": "npx @vscode/vsce publish --pre-release"
